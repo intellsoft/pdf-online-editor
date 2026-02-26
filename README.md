@@ -24,7 +24,7 @@
 
 می‌توانید نسخهٔ زندهٔ ابزار را در آدرس زیر مشاهده و استفاده کنید:
 
-👉 **[intellsoft.ir/tools/pdf-editor](https://intellsoft.ir/tools/pdf-editor)**
+👉 **[https://intellsoft.github.io/pdf-online-editor](https://intellsoft.github.io/pdf-online-editor/)**
 
 ---
 
@@ -56,4 +56,4 @@
 
 1. مخزن را کلون کنید:
    ```bash
-   git clone https://github.com/your-username/private-pdf-editor.git
+   git clone https://github.com/intellsoft/pdf-online-edito.git
