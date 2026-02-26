@@ -4,24 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- SEO meta tags -->
-    <title>ویرایشگر PDF خصوصی | امن و بدون ارسال به سرور</title>
-    <meta name="description" content="ابزار آنلاین ویرایش PDF با حفظ حریم خصوصی: ادغام، جداسازی و حذف صفحات PDF مستقیماً در مرورگر و بدون ارسال فایل به سرور.">
-    <meta name="keywords" content="ویرایشگر PDF, PDF آنلاین, ادغام PDF, جدا کردن صفحات PDF, حذف صفحات PDF, PDF امن, pdf-lib, خصوصی, رایگان">
+    <title>ویرایشگر PDF خصوصی | فشرده‌سازی، ادغام، جداسازی و حذف صفحات</title>
+    <meta name="description" content="ابزار آنلاین ویرایش PDF با حفظ حریم خصوصی: فشرده‌سازی، ادغام، جداسازی و حذف صفحات PDF مستقیماً در مرورگر و بدون ارسال فایل به سرور.">
+    <meta name="keywords" content="ویرایشگر PDF, فشرده‌سازی PDF, کاهش حجم PDF, PDF آنلاین, ادغام PDF, جدا کردن صفحات PDF, حذف صفحات PDF, PDF امن, pdf-lib, خصوصی, رایگان">
     <meta name="author" content="IntellSoft">
     <meta name="robots" content="index, follow">
-    <!-- Open graph for social media -->
+    <!-- Open graph -->
     <meta property="og:title" content="ویرایشگر PDF خصوصی - امن و سریع">
-    <meta property="og:description" content="ادغام، جداسازی و حذف صفحات PDF بدون آپلود فایل. حریم خصوصی شما کاملاً حفظ می‌شود.">
+    <meta property="og:description" content="فشرده‌سازی، ادغام، جداسازی و حذف صفحات PDF بدون آپلود فایل. حریم خصوصی شما کاملاً حفظ می‌شود.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://intellsoft.ir/tools/pdf-editor">
-    <meta property="og:image" content="https://intellsoft.ir/assets/pdf-editor-og.jpg"> <!-- optional -->
-    <!-- pdf-lib & jszip from CDN -->
+    <meta property="og:image" content="https://intellsoft.ir/assets/pdf-editor-og.jpg">
+    <!-- pdf-lib & jszip -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- Font Awesome icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* همان استایل‌های قبلی با اندکی تنظیم برای راست‌چین */
+        /* همان استایل‌های قبلی با تنظیمات راست‌چین */
         * {
             margin: 0;
             padding: 0;
@@ -120,7 +120,7 @@
         .logo span {
             font-size: 0.95rem;
             color: var(--text-secondary);
-            margin-right: 0.75rem; /* RTL adjustment */
+            margin-right: 0.75rem;
             font-weight: 400;
         }
 
@@ -144,7 +144,7 @@
 
         .tool-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.8rem;
             margin-bottom: 2rem;
         }
@@ -203,7 +203,7 @@
             border: 1px solid var(--border-light);
             border-radius: 2rem;
             padding: 0.4rem 1rem;
-            margin-left: 1rem; /* RTL: margin-right becomes margin-left */
+            margin-left: 1rem;
             margin-right: 0;
             color: var(--text-primary);
             font-weight: 500;
@@ -269,9 +269,10 @@
             display: inline-block;
             margin: 0.5rem 0 0.2rem;
             border: 1px solid var(--border-light);
+            direction: ltr;
+            text-align: left;
         }
 
-        /* بخش امنیتی جدید */
         .privacy-notice {
             background: var(--btn-secondary);
             border-radius: 3rem;
@@ -310,7 +311,7 @@
         }
 
         #downloadArea {
-            margin-right: auto; /* RTL */
+            margin-right: auto;
             display: flex;
             gap: 0.8rem;
             flex-wrap: wrap;
@@ -357,14 +358,21 @@
         footer a:hover {
             text-decoration: underline;
         }
+        .size-badge {
+            font-size: 0.8rem;
+            background: var(--bg-card);
+            padding: 0.2rem 0.7rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border-light);
+        }
     </style>
 </head>
 <body>
 <div class="glass-panel">
-    <!-- header with Persian title -->
+    <!-- header -->
     <div class="header-row">
         <div class="logo">
-            <h1>ویرایشگر PDF خصوصی <span>· امن و بی‌نیاز از آپلود</span></h1>
+            <h1>ویرایشگر PDF خصوصی <span>· فشرده‌سازی + ابزارهای کامل</span></h1>
         </div>
         <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
             <i class="fas fa-sun"></i>
@@ -373,14 +381,30 @@
         </button>
     </div>
 
-    <!-- بخش اطمینان‌بخش (کاملاً آنلاین و بدون سرور) -->
+    <!-- بخش اطمینان -->
     <div class="privacy-notice">
-        <i class="fas fa-shield-halbed"></i> <!-- or fa-lock, fa-cloud -->
+        <i class="fas fa-shield-halbed"></i>
         <span><strong>کاملاً آنلاین و امن</strong> — همه‌ی عملیات داخل مرورگر شما اجرا می‌شود و هیچ فایلی به سرور ارسال نمی‌گردد. حریم خصوصی شما حفظ می‌شود.</span>
     </div>
 
-    <!-- سه کارت اصلی -->
+    <!-- چهار کارت اصلی (اضافه شدن فشرده‌سازی) -->
     <div class="tool-grid">
+        <!-- فشرده‌سازی (جدید) -->
+        <div class="tool-card">
+            <div class="card-header">
+                <i class="fas fa-compress-alt"></i>
+                <h2>فشرده‌سازی</h2>
+            </div>
+            <div class="file-input-area">
+                <input type="file" id="compressInput" accept="application/pdf">
+            </div>
+            <div class="input-desc">
+                <i class="fas fa-info-circle"></i> کاهش حجم PDF با بهینه‌سازی ساختار داخلی
+            </div>
+            <button class="action-btn" id="compressBtn"><i class="fas fa-file-pdf"></i> فشرده‌سازی</button>
+            <div class="info-badge" id="compressInfo"> </div>
+        </div>
+
         <!-- ادغام -->
         <div class="tool-card">
             <div class="card-header">
@@ -397,7 +421,7 @@
             <div class="info-badge" id="mergeInfo"> </div>
         </div>
 
-        <!-- جداسازی (هر صفحه یک فایل) -->
+        <!-- جداسازی -->
         <div class="tool-card">
             <div class="card-header">
                 <i class="fas fa-cut"></i>
@@ -464,6 +488,10 @@
         });
 
         // عناصر رابط
+        const compressInput = document.getElementById('compressInput');
+        const compressBtn = document.getElementById('compressBtn');
+        const compressInfo = document.getElementById('compressInfo');
+
         const mergeInput = document.getElementById('mergeInput');
         const mergeBtn = document.getElementById('mergeBtn');
         const mergeInfo = document.getElementById('mergeInfo');
@@ -489,6 +517,15 @@
             downloadArea.innerHTML = '';
         }
 
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
         function parsePageRanges(input, totalPages) {
             if (!input.trim()) return [];
             const parts = input.split(',').map(s => s.trim());
@@ -510,7 +547,56 @@
             return Array.from(indices).sort((a,b) => a-b);
         }
 
-        // ادغام
+        // ========== فشرده‌سازی ==========
+        compressBtn.addEventListener('click', async () => {
+            const file = compressInput.files[0];
+            if (!file) {
+                setStatus('❌ لطفاً یک فایل PDF انتخاب کنید.', true);
+                return;
+            }
+            clearDownloads();
+            setStatus('⏳ در حال فشرده‌سازی (بهینه‌سازی ساختار) ...');
+            compressInfo.innerText = `📄 ${file.name} (${formatBytes(file.size)})`;
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const arrayBuf = await file.arrayBuffer();
+                const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+                // ذخیره مجدد با فشرده‌سازی پیش‌فرض pdf-lib
+                const compressedBytes = await pdf.save({ useObjectStreams: true }); // true = فشرده‌سازی بیشتر
+                const compressedBlob = new Blob([compressedBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(compressedBlob);
+
+                const originalSize = file.size;
+                const newSize = compressedBlob.size;
+                const percent = ((originalSize - newSize) / originalSize * 100).toFixed(1);
+                const savings = originalSize - newSize;
+
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = 'compressed.pdf';
+                downloadLink.className = 'download-link';
+                downloadLink.innerHTML = `<i class="fas fa-download"></i> compressed.pdf (${formatBytes(newSize)})`;
+                downloadArea.appendChild(downloadLink);
+
+                setStatus(`✅ فشرده‌سازی انجام شد. حجم اولیه: ${formatBytes(originalSize)} | جدید: ${formatBytes(newSize)} (${percent}% کاهش) ${savings > 0 ? '👍' : '⚠️ ممکن است افزایش جزئی داشته باشد.'}`);
+                compressInfo.innerText = `📄 قبل: ${formatBytes(originalSize)}  ←  بعد: ${formatBytes(newSize)}`;
+            } catch (err) {
+                setStatus(`❌ خطا در فشرده‌سازی: ${err.message}`, true);
+                compressInfo.innerText = '⚠️ خطا';
+            }
+        });
+
+        compressInput.addEventListener('change', () => {
+            const file = compressInput.files[0];
+            if (file) {
+                compressInfo.innerText = `📄 ${file.name} (${formatBytes(file.size)})`;
+            } else {
+                compressInfo.innerText = ' ';
+            }
+        });
+
+        // ========== ادغام ==========
         mergeBtn.addEventListener('click', async () => {
             const files = mergeInput.files;
             if (!files || files.length < 2) {
@@ -549,7 +635,12 @@
             }
         });
 
-        // جداسازی
+        mergeInput.addEventListener('change', () => {
+            const len = mergeInput.files.length;
+            mergeInfo.innerText = len ? `📄 ${len} فایل انتخاب شد` : ' ';
+        });
+
+        // ========== جداسازی ==========
         splitBtn.addEventListener('click', async () => {
             const file = splitInput.files[0];
             if (!file) {
@@ -595,7 +686,21 @@
             }
         });
 
-        // حذف صفحات
+        splitInput.addEventListener('change', async () => {
+            const file = splitInput.files[0];
+            if (!file) { splitInfo.innerText = ' '; return; }
+            try {
+                const { PDFDocument } = PDFLib;
+                const arrayBuf = await file.arrayBuffer();
+                const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+                const cnt = pdf.getPageCount();
+                splitInfo.innerText = `📄 ${file.name} (${cnt} صفحه)`;
+            } catch (e) {
+                splitInfo.innerText = `⚠️ فایل نامعتبر`;
+            }
+        });
+
+        // ========== حذف صفحات ==========
         deleteBtn.addEventListener('click', async () => {
             const file = deleteInput.files[0];
             if (!file) {
@@ -663,7 +768,6 @@
             }
         });
 
-        // نمایش اطلاعات هنگام انتخاب فایل
         deleteInput.addEventListener('change', async () => {
             const file = deleteInput.files[0];
             if (!file) { deleteInfo.innerText = ' '; return; }
@@ -678,25 +782,7 @@
             }
         });
 
-        splitInput.addEventListener('change', async () => {
-            const file = splitInput.files[0];
-            if (!file) { splitInfo.innerText = ' '; return; }
-            try {
-                const { PDFDocument } = PDFLib;
-                const arrayBuf = await file.arrayBuffer();
-                const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
-                const cnt = pdf.getPageCount();
-                splitInfo.innerText = `📄 ${file.name} (${cnt} صفحه)`;
-            } catch (e) {
-                splitInfo.innerText = `⚠️ فایل نامعتبر`;
-            }
-        });
-
-        mergeInput.addEventListener('change', () => {
-            const len = mergeInput.files.length;
-            mergeInfo.innerText = len ? `📄 ${len} فایل انتخاب شد` : ' ';
-        });
-
+        // مقداردهی اولیه
         setStatus('🛡️ حریم خصوصی: فایل‌ها هرگز از دستگاه شما خارج نمی‌شوند.');
     })();
 </script>
