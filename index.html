@@ -159,6 +159,7 @@
             transition: transform 0.1s ease, box-shadow 0.2s;
             display: flex;
             flex-direction: column;
+            height: 100%; /* برای یکسان‌سازی ارتفاع در ردیف */
         }
         .tool-card:hover {
             box-shadow: 0 18px 30px -12px rgba(0,0,0,0.2);
@@ -249,7 +250,7 @@
             cursor: pointer;
             transition: background 0.15s, transform 0.05s;
             border: 1px solid rgba(255,255,255,0.1);
-            margin-top: 0.6rem;
+            margin-top: auto;        /* دکمه را به پایین می‌چسباند */
             width: 100%;
             font-size: 1rem;
         }
@@ -267,7 +268,7 @@
             font-size: 0.85rem;
             color: var(--text-secondary);
             display: inline-block;
-            margin: 0.5rem 0 0.2rem;
+            margin: 0 0 0.75rem 0;   /* فاصله از دکمه */
             border: 1px solid var(--border-light);
             direction: ltr;
             text-align: left;
@@ -387,9 +388,9 @@
         <span><strong>کاملاً آنلاین و امن</strong> — همه‌ی عملیات داخل مرورگر شما اجرا می‌شود و هیچ فایلی به سرور ارسال نمی‌گردد. حریم خصوصی شما حفظ می‌شود.</span>
     </div>
 
-    <!-- چهار کارت اصلی (اضافه شدن فشرده‌سازی) -->
+    <!-- چهار کارت اصلی (ترتیب المان‌ها اصلاح شده) -->
     <div class="tool-grid">
-        <!-- فشرده‌سازی (جدید) -->
+        <!-- فشرده‌سازی -->
         <div class="tool-card">
             <div class="card-header">
                 <i class="fas fa-compress-alt"></i>
@@ -401,8 +402,9 @@
             <div class="input-desc">
                 <i class="fas fa-info-circle"></i> کاهش حجم PDF با بهینه‌سازی ساختار داخلی
             </div>
-            <button class="action-btn" id="compressBtn"><i class="fas fa-file-pdf"></i> فشرده‌سازی</button>
+            <!-- info-badge قبل از دکمه منتقل شد -->
             <div class="info-badge" id="compressInfo"> </div>
+            <button class="action-btn" id="compressBtn"><i class="fas fa-file-pdf"></i> فشرده‌سازی</button>
         </div>
 
         <!-- ادغام -->
@@ -417,8 +419,8 @@
             <div class="input-desc">
                 <i class="fas fa-info-circle"></i> چند پی‌دی‌اف را انتخاب کنید (ترتیب مهم است)
             </div>
-            <button class="action-btn" id="mergeBtn"><i class="fas fa-merge"></i> ادغام فایل‌ها</button>
             <div class="info-badge" id="mergeInfo"> </div>
+            <button class="action-btn" id="mergeBtn"><i class="fas fa-merge"></i> ادغام فایل‌ها</button>
         </div>
 
         <!-- جداسازی -->
@@ -433,8 +435,8 @@
             <div class="input-desc">
                 <i class="fas fa-info-circle"></i> هر صفحه به یک پی‌دی‌اف جدا تبدیل و در ZIP ذخیره می‌شود
             </div>
-            <button class="action-btn" id="splitBtn"><i class="fas fa-file-zipper"></i> جداسازی به ZIP</button>
             <div class="info-badge" id="splitInfo"> </div>
+            <button class="action-btn" id="splitBtn"><i class="fas fa-file-zipper"></i> جداسازی به ZIP</button>
         </div>
 
         <!-- حذف صفحات -->
@@ -450,8 +452,8 @@
             <div class="input-desc">
                 <i class="fas fa-info-circle"></i> شماره صفحاتی که حذف شوند (بر اساس 1)
             </div>
-            <button class="action-btn" id="deleteBtn"><i class="fas fa-eraser"></i> اعمال حذف</button>
             <div class="info-badge" id="deleteInfo"> </div>
+            <button class="action-btn" id="deleteBtn"><i class="fas fa-eraser"></i> اعمال حذف</button>
         </div>
     </div>
 
