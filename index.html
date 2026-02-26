@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO meta tags -->
+    <title>ویرایشگر PDF خصوصی | امن و بدون ارسال به سرور</title>
+    <meta name="description" content="ابزار آنلاین ویرایش PDF با حفظ حریم خصوصی: ادغام، جداسازی و حذف صفحات PDF مستقیماً در مرورگر و بدون ارسال فایل به سرور.">
+    <meta name="keywords" content="ویرایشگر PDF, PDF آنلاین, ادغام PDF, جدا کردن صفحات PDF, حذف صفحات PDF, PDF امن, pdf-lib, خصوصی, رایگان">
+    <meta name="author" content="IntellSoft">
+    <meta name="robots" content="index, follow">
+    <!-- Open graph for social media -->
+    <meta property="og:title" content="ویرایشگر PDF خصوصی - امن و سریع">
+    <meta property="og:description" content="ادغام، جداسازی و حذف صفحات PDF بدون آپلود فایل. حریم خصوصی شما کاملاً حفظ می‌شود.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://intellsoft.ir/tools/pdf-editor">
+    <meta property="og:image" content="https://intellsoft.ir/assets/pdf-editor-og.jpg"> <!-- optional -->
+    <!-- pdf-lib & jszip from CDN -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* همان استایل‌های قبلی با اندکی تنظیم برای راست‌چین */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            line-height: 1.5;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        :root {
+            --bg-body: #f4f7fb;
+            --bg-card: rgba(255,255,255,0.75);
+            --glass-border: rgba(255,255,255,0.5);
+            --glass-shadow: 0 20px 35px -8px rgba(0,10,30,0.15), 0 0 0 1px rgba(255,255,255,0.5);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --accent: #2563eb;
+            --accent-soft: #3b82f6;
+            --input-bg: rgba(255,255,255,0.9);
+            --border-light: #e2e8f0;
+            --card-bg: #ffffffcc;
+            --btn-primary: #2563eb;
+            --btn-primary-hover: #1d4ed8;
+            --btn-secondary: #f1f5f9;
+            --btn-secondary-hover: #e2e8f0;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --placeholder: #94a3b8;
+        }
+
+        body.dark {
+            --bg-body: #0b1120;
+            --bg-card: rgba(18, 28, 46, 0.8);
+            --glass-border: rgba(255,255,255,0.06);
+            --glass-shadow: 0 20px 35px -8px #00000055, 0 0 0 1px rgba(255,255,255,0.05);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --accent: #3b82f6;
+            --accent-soft: #60a5fa;
+            --input-bg: #1e293b;
+            --border-light: #334155;
+            --card-bg: #1e293bcc;
+            --btn-primary: #3b82f6;
+            --btn-primary-hover: #2563ed;
+            --btn-secondary: #1e293b;
+            --btn-secondary-hover: #334155;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --placeholder: #64748b;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            backdrop-filter: blur(2px);
+        }
+
+        .glass-panel {
+            max-width: 1400px;
+            width: 100%;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 2.5rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            padding: 2rem 2rem 2.5rem;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo h1 {
+            font-weight: 600;
+            font-size: 2rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo span {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-right: 0.75rem; /* RTL adjustment */
+            font-weight: 400;
+        }
+
+        .theme-toggle {
+            background: var(--btn-secondary);
+            border: none;
+            border-radius: 3rem;
+            padding: 0.5rem 1.25rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid var(--border-light);
+        }
+        .theme-toggle:hover {
+            background: var(--btn-secondary-hover);
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 1.8rem;
+            padding: 1.8rem 1.5rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 18px -6px rgba(0,0,0,0.1);
+            transition: transform 0.1s ease, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .tool-card:hover {
+            box-shadow: 0 18px 30px -12px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1.5rem;
+        }
+        .card-header i {
+            font-size: 1.8rem;
+            color: var(--accent);
+            background: var(--btn-secondary);
+            padding: 0.6rem;
+            border-radius: 1.2rem;
+        }
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 550;
+            letter-spacing: -0.01em;
+        }
+
+        .file-input-area {
+            background: var(--input-bg);
+            border: 1px dashed var(--border-light);
+            border-radius: 1.2rem;
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0 1rem;
+            color: var(--text-secondary);
+        }
+        .file-input-area input[type="file"] {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        input[type="file"]::file-selector-button {
+            background: var(--btn-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 2rem;
+            padding: 0.4rem 1rem;
+            margin-left: 1rem; /* RTL: margin-right becomes margin-left */
+            margin-right: 0;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: var(--btn-secondary-hover);
+        }
+
+        .input-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0.25rem 0 1rem;
+        }
+
+        .param-field {
+            background: var(--input-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 2.5rem;
+            padding: 0.7rem 1.2rem;
+            width: 100%;
+            margin: 0.5rem 0 1.2rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        .param-field::placeholder {
+            color: var(--placeholder);
+            font-weight: 300;
+        }
+
+        .action-btn {
+            background: var(--btn-primary);
+            border: none;
+            border-radius: 2.5rem;
+            padding: 0.9rem 1.5rem;
+            font-weight: 600;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.05s;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 0.6rem;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .action-btn:hover {
+            background: var(--btn-primary-hover);
+        }
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+
+        .info-badge {
+            background: var(--btn-secondary);
+            border-radius: 2rem;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: inline-block;
+            margin: 0.5rem 0 0.2rem;
+            border: 1px solid var(--border-light);
+        }
+
+        /* بخش امنیتی جدید */
+        .privacy-notice {
+            background: var(--btn-secondary);
+            border-radius: 3rem;
+            padding: 1rem 1.8rem;
+            margin: 1.5rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            border: 1px solid var(--border-light);
+            font-size: 1rem;
+        }
+        .privacy-notice i {
+            color: var(--success);
+            font-size: 1.6rem;
+        }
+        .privacy-notice strong {
+            color: var(--accent);
+        }
+
+        .status-msg {
+            background: var(--btn-secondary);
+            border-radius: 3rem;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            border: 1px solid var(--border-light);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .status-msg i {
+            color: var(--accent);
+        }
+
+        #downloadArea {
+            margin-right: auto; /* RTL */
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .download-link {
+            background: var(--success);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        hr {
+            border: 0.5px solid var(--border-light);
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        footer {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="glass-panel">
+    <!-- header with Persian title -->
+    <div class="header-row">
+        <div class="logo">
+            <h1>ویرایشگر PDF خصوصی <span>· امن و بی‌نیاز از آپلود</span></h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
+            <i class="fas fa-sun"></i>
+            <span>تیره/روشن</span>
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- بخش اطمینان‌بخش (کاملاً آنلاین و بدون سرور) -->
+    <div class="privacy-notice">
+        <i class="fas fa-shield-halbed"></i> <!-- or fa-lock, fa-cloud -->
+        <span><strong>کاملاً آنلاین و امن</strong> — همه‌ی عملیات داخل مرورگر شما اجرا می‌شود و هیچ فایلی به سرور ارسال نمی‌گردد. حریم خصوصی شما حفظ می‌شود.</span>
+    </div>
+
+    <!-- سه کارت اصلی -->
+    <div class="tool-grid">
+        <!-- ادغام -->
+        <div class="tool-card">
+            <div class="card-header">
+                <i class="fas fa-layer-group"></i>
+                <h2>ادغام</h2>
+            </div>
+            <div class="file-input-area">
+                <input type="file" id="mergeInput" accept="application/pdf" multiple>
+            </div>
+            <div class="input-desc">
+                <i class="fas fa-info-circle"></i> چند پی‌دی‌اف را انتخاب کنید (ترتیب مهم است)
+            </div>
+            <button class="action-btn" id="mergeBtn"><i class="fas fa-merge"></i> ادغام فایل‌ها</button>
+            <div class="info-badge" id="mergeInfo"> </div>
+        </div>
+
+        <!-- جداسازی (هر صفحه یک فایل) -->
+        <div class="tool-card">
+            <div class="card-header">
+                <i class="fas fa-cut"></i>
+                <h2>جداسازی</h2>
+            </div>
+            <div class="file-input-area">
+                <input type="file" id="splitInput" accept="application/pdf">
+            </div>
+            <div class="input-desc">
+                <i class="fas fa-info-circle"></i> هر صفحه به یک پی‌دی‌اف جدا تبدیل و در ZIP ذخیره می‌شود
+            </div>
+            <button class="action-btn" id="splitBtn"><i class="fas fa-file-zipper"></i> جداسازی به ZIP</button>
+            <div class="info-badge" id="splitInfo"> </div>
+        </div>
+
+        <!-- حذف صفحات -->
+        <div class="tool-card">
+            <div class="card-header">
+                <i class="fas fa-trash-alt"></i>
+                <h2>حذف صفحات</h2>
+            </div>
+            <div class="file-input-area">
+                <input type="file" id="deleteInput" accept="application/pdf">
+            </div>
+            <input type="text" class="param-field" id="deletePages" placeholder="مثال: 1,3-5,7" value="">
+            <div class="input-desc">
+                <i class="fas fa-info-circle"></i> شماره صفحاتی که حذف شوند (بر اساس 1)
+            </div>
+            <button class="action-btn" id="deleteBtn"><i class="fas fa-eraser"></i> اعمال حذف</button>
+            <div class="info-badge" id="deleteInfo"> </div>
+        </div>
+    </div>
+
+    <!-- وضعیت و دانلود -->
+    <div class="status-msg" id="globalStatus">
+        <i class="fas fa-shield-alt"></i>
+        <span id="statusText">آماده است. همه عملیات در سمت کاربر انجام می‌شود.</span>
+        <div id="downloadArea"></div>
+    </div>
+
+    <hr>
+    <footer>
+        <span> • </span>
+        <a href="https://intellsoft.ir/" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-globe"></i> ایجاد شده توسط IntellSoft
+        </a>
+        <span>•</span>
+        <i class="fas fa-lock"></i> بدون ارسال به سرور
+        <span>•</span>
+        <i class="fas fa-mobile-alt"></i> واکنش‌گرا ۲۰۲۶
+    </footer>
+</div>
+
+<script>
+    (function() {
+        // theme handling
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) body.classList.add('dark');
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+        });
+
+        // عناصر رابط
+        const mergeInput = document.getElementById('mergeInput');
+        const mergeBtn = document.getElementById('mergeBtn');
+        const mergeInfo = document.getElementById('mergeInfo');
+
+        const splitInput = document.getElementById('splitInput');
+        const splitBtn = document.getElementById('splitBtn');
+        const splitInfo = document.getElementById('splitInfo');
+
+        const deleteInput = document.getElementById('deleteInput');
+        const deletePages = document.getElementById('deletePages');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const deleteInfo = document.getElementById('deleteInfo');
+
+        const statusText = document.getElementById('statusText');
+        const downloadArea = document.getElementById('downloadArea');
+
+        function setStatus(msg, isError = false) {
+            statusText.innerHTML = msg;
+            statusText.style.color = isError ? 'var(--danger)' : 'var(--text-primary)';
+        }
+
+        function clearDownloads() {
+            downloadArea.innerHTML = '';
+        }
+
+        function parsePageRanges(input, totalPages) {
+            if (!input.trim()) return [];
+            const parts = input.split(',').map(s => s.trim());
+            const indices = new Set();
+            const pageRangeRegex = /^(\d+)(?:-(\d+))?$/;
+
+            for (const part of parts) {
+                const match = part.match(pageRangeRegex);
+                if (!match) throw new Error(`محدوده نامعتبر: "${part}"`);
+                const start = parseInt(match[1], 10);
+                const end = match[2] ? parseInt(match[2], 10) : start;
+                if (start < 1 || end < 1 || start > totalPages || end > totalPages || start > end) {
+                    throw new Error(`صفحه ${part} خارج از بازه (1-${totalPages})`);
+                }
+                for (let i = start; i <= end; i++) {
+                    indices.add(i - 1);
+                }
+            }
+            return Array.from(indices).sort((a,b) => a-b);
+        }
+
+        // ادغام
+        mergeBtn.addEventListener('click', async () => {
+            const files = mergeInput.files;
+            if (!files || files.length < 2) {
+                setStatus('❌ حداقل دو فایل PDF برای ادغام انتخاب کنید.', true);
+                return;
+            }
+            clearDownloads();
+            setStatus('⏳ در حال ادغام PDFها ...');
+            mergeInfo.innerText = `📄 ${files.length} فایل انتخاب شد`;
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const mergedPdf = await PDFDocument.create();
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const arrayBuf = await file.arrayBuffer();
+                    const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+                    const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                    pages.forEach(page => mergedPdf.addPage(page));
+                }
+
+                const mergedBytes = await mergedPdf.save();
+                const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = 'merged.pdf';
+                downloadLink.className = 'download-link';
+                downloadLink.innerHTML = '<i class="fas fa-download"></i> merged.pdf';
+                downloadArea.appendChild(downloadLink);
+                setStatus('✅ ادغام موفق. فایل را دانلود کنید.');
+            } catch (err) {
+                setStatus(`❌ خطا در ادغام: ${err.message}`, true);
+            }
+        });
+
+        // جداسازی
+        splitBtn.addEventListener('click', async () => {
+            const file = splitInput.files[0];
+            if (!file) {
+                setStatus('❌ لطفاً یک فایل PDF انتخاب کنید.', true);
+                return;
+            }
+            clearDownloads();
+            setStatus('⏳ در حال جدا کردن صفحات و ساخت ZIP ...');
+            splitInfo.innerText = `📄 ${file.name}`;
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const arrayBuf = await file.arrayBuffer();
+                const sourcePdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+                const pageCount = sourcePdf.getPageCount();
+
+                if (pageCount === 0) throw new Error('فایل PDF صفحه‌ای ندارد.');
+
+                const zip = new JSZip();
+
+                for (let i = 0; i < pageCount; i++) {
+                    const newPdf = await PDFDocument.create();
+                    const [copiedPage] = await newPdf.copyPages(sourcePdf, [i]);
+                    newPdf.addPage(copiedPage);
+                    const pdfBytes = await newPdf.save();
+                    zip.file(`page-${i+1}.pdf`, pdfBytes);
+                }
+
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                const url = URL.createObjectURL(zipBlob);
+
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = 'split_pages.zip';
+                downloadLink.className = 'download-link';
+                downloadLink.innerHTML = '<i class="fas fa-download"></i> split_pages.zip';
+                downloadArea.appendChild(downloadLink);
+
+                setStatus(`✅ جداسازی ${pageCount} صفحه و فشرده‌سازی انجام شد.`);
+                splitInfo.innerText = `📄 ${file.name} (${pageCount} صفحه)`;
+            } catch (err) {
+                setStatus(`❌ خطا در جداسازی: ${err.message}`, true);
+            }
+        });
+
+        // حذف صفحات
+        deleteBtn.addEventListener('click', async () => {
+            const file = deleteInput.files[0];
+            if (!file) {
+                setStatus('❌ لطفاً یک فایل PDF انتخاب کنید.', true);
+                return;
+            }
+            const rangeStr = deletePages.value.trim();
+            if (!rangeStr) {
+                setStatus('❌ شماره صفحات مورد نظر برای حذف را وارد کنید.', true);
+                return;
+            }
+
+            clearDownloads();
+            setStatus('⏳ در حال بارگذاری و حذف صفحات ...');
+            deleteInfo.innerText = `📄 ${file.name}`;
+
+            try {
+                const { PDFDocument } = PDFLib;
+                const arrayBuf = await file.arrayBuffer();
+                const sourcePdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+                const totalPages = sourcePdf.getPageCount();
+
+                let removeIndices;
+                try {
+                    removeIndices = parsePageRanges(rangeStr, totalPages);
+                } catch (e) {
+                    setStatus(`❌ ${e.message}`, true);
+                    return;
+                }
+
+                if (removeIndices.length === 0) {
+                    setStatus('⚠️ صفحه‌ای برای حذف مشخص نشده.', true);
+                    return;
+                }
+
+                const keepIndices = [];
+                for (let i = 0; i < totalPages; i++) {
+                    if (!removeIndices.includes(i)) keepIndices.push(i);
+                }
+
+                if (keepIndices.length === 0) {
+                    setStatus('❌ نتیجه خالی است – همه صفحات حذف شدند.', true);
+                    return;
+                }
+
+                const newPdf = await PDFDocument.create();
+                const pagesToCopy = await newPdf.copyPages(sourcePdf, keepIndices);
+                pagesToCopy.forEach(page => newPdf.addPage(page));
+
+                const newBytes = await newPdf.save();
+                const blob = new Blob([newBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = 'modified.pdf';
+                downloadLink.className = 'download-link';
+                downloadLink.innerHTML = '<i class="fas fa-download"></i> modified.pdf';
+                downloadArea.appendChild(downloadLink);
+
+                setStatus(`✅ ${removeIndices.length} صفحه حذف شد. ${keepIndices.length} صفحه باقی ماند.`);
+                deleteInfo.innerText = `📄 ${file.name} (پس از حذف)`;
+            } catch (err) {
+                setStatus(`❌ خطا: ${err.message}`, true);
+            }
+        });
+
+        // نمایش اطلاعات هنگام انتخاب فایل
+        deleteInput.addEventListener('change', async () => {
+            const file = deleteInput.files[0];
+            if (!file) { deleteInfo.innerText = ' '; return; }
+            try {
+                const { PDFDocument } = PDFLib;
+                const arrayBuf = await file.arrayBuffer();
+                const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+                const cnt = pdf.getPageCount();
+                deleteInfo.innerText = `📄 ${file.name} (${cnt} صفحه)`;
+            } catch (e) {
+                deleteInfo.innerText = `⚠️ فایل نامعتبر`;
+            }
+        });
+
+        splitInput.addEventListener('change', async () => {
+            const file = splitInput.files[0];
+            if (!file) { splitInfo.innerText = ' '; return; }
+            try {
+                const { PDFDocument } = PDFLib;
+                const arrayBuf = await file.arrayBuffer();
+                const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+                const cnt = pdf.getPageCount();
+                splitInfo.innerText = `📄 ${file.name} (${cnt} صفحه)`;
+            } catch (e) {
+                splitInfo.innerText = `⚠️ فایل نامعتبر`;
+            }
+        });
+
+        mergeInput.addEventListener('change', () => {
+            const len = mergeInput.files.length;
+            mergeInfo.innerText = len ? `📄 ${len} فایل انتخاب شد` : ' ';
+        });
+
+        setStatus('🛡️ حریم خصوصی: فایل‌ها هرگز از دستگاه شما خارج نمی‌شوند.');
+    })();
+</script>
+</body>
+</html>
