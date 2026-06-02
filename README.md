@@ -25,6 +25,7 @@
 می‌توانید نسخهٔ زندهٔ ابزار را در آدرس زیر مشاهده و استفاده کنید:
 
 👉 **[https://intellsoft.github.io/pdf-online-editor](https://intellsoft.github.io/pdf-online-editor/)**
+👉 **[ربات خانم pdf در پیام رسان بله](http://ble.ir/mrspdfbot)**
 
 ---
 
